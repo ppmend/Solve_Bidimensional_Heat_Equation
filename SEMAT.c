@@ -1,17 +1,17 @@
 //-----------------------------------------------------------------------------
 /*
-   Universidade Federal de Uberl‚ndia
-   Faculdade de Matem·tica
+   Universidade Federal de Uberl√¢ndia
+   Faculdade de Matem√°tica
    Projeto de IC
 Data: 18/08/2025
-Autor: Pedro Paulo Nogueira MendonÁa e Rafael Alves Figueiredo
+Autor: Pedro Paulo Nogueira Mendon√ßa e Rafael Alves Figueiredo
 
-Resolve a equaÁ„o do calor 2D:
+Resolve a equa√ß√£o do calor 2D:
 
 rho * Cp * psi_t = d( K * psi_x )/dx + d( K * psi_y )/dy + G
 
-em um domÌnio [0,Lx] x [0, Ly]
-usando o mÈtodo de diferenÁas finitas e Gauss-Seidel
+em um dom√≠nio [0,Lx] x [0, Ly]
+usando o m√©todo de diferen√ßas finitas e Gauss-Seidel
 */
 //-----------------------------------------------------------------------------
 // Bibliotecas do sistema
@@ -40,7 +40,7 @@ typedef struct {
   double T_infinity;
 } params_t;
 
-params_t *params; // InformaÁ„o global
+params_t *params; // Informa√ß√£o global
 
 //-----------------------------------------------------------------------------
 // Macros
@@ -53,15 +53,15 @@ params_t *params; // InformaÁ„o global
 #define POINT_NEUMAN1 4   // dp/dx = 0 || dp/dy = 0
 #define POINT_NEUMAN2 8   // q_cond = q_conv
 
-#define TOL 1.0e-8  // Toler‚ncia do critÈrio de parada da resoluÁ„o do sistema linear
-#define ITMAX 10.0e10   // N˙mero m·ximo de iteraÁıes que o programa pode fazer
-#define rho 8960.0   // Par‚metro da EquaÁ„o do Calor
-#define Cp 385.0     // Par‚metro da EquaÁ„o do Calor
-#define h 25.0      // Par‚metro da EquaÁ„o do Calor
+#define TOL 1.0e-8  // Toler√¢ncia do crit√©rio de parada da resolu√ß√£o do sistema linear
+#define ITMAX 10.0e10   // N√∫mero m√°ximo de itera√ß√µes que o programa pode fazer
+#define rho 8960.0   // Par√¢metro da Equa√ß√£o do Calor
+#define Cp 385.0     // Par√¢metro da Equa√ß√£o do Calor
+#define h 25.0      // Par√¢metro da Equa√ß√£o do Calor
 
 //-----------------------------------------------------------------------------
 
-// DeclaraÁ„o de funÁıes
+// Declara√ß√£o de fun√ß√µes
 
 StateField *SetDomain(int Z);
 void Solver(StateField *field, int Z);
@@ -78,12 +78,12 @@ double calcG(double x);
 
 int main() {
 
-  // DeclaraÁ„o das vari·veis
+  // Declara√ß√£o das vari√°veis
   //for(int Z = 26; Z <= 35; Z++ ){
 
-  int Z = 50; // Par‚metro definidor do n˙mero de pontos do sistema
+  int Z = 50; // Par√¢metro definidor do n√∫mero de pontos do sistema
 
-  params = calloc(1, sizeof(params_t)); // Nx, Ny, Lx, Ly s„o par‚metros globais
+  params = calloc(1, sizeof(params_t)); // Nx, Ny, Lx, Ly s√£o par√¢metros globais
 
   StateField *field;
 
@@ -105,11 +105,11 @@ int main() {
 
 //-----------------------------------------------------------------------------
 
-StateField *SetDomain(int Z) { // Definindo domÌnio inicial
+StateField *SetDomain(int Z) { // Definindo dom√≠nio inicial
 
   StateField *field;
-  params->Nx = 5 + 4 * Z ; // Nx = 5 + 4Z (Z È um inteiro)
-  params->Ny = 6 + 5 * Z ; // Ny = 6 + 5Z (Z È um inteiro)
+  params->Nx = 5 + 4 * Z ; // Nx = 5 + 4Z (Z √© um inteiro)
+  params->Ny = 6 + 5 * Z ; // Ny = 6 + 5Z (Z √© um inteiro)
   params->Nt = 240;
   params->Lx = 50.0e-03; // Comprimento do sistema [m]
   params->Ly = 40.0e-03;
@@ -124,7 +124,7 @@ StateField *SetDomain(int Z) { // Definindo domÌnio inicial
   dx = params->Lx / ( params->Nx-1.0 );
   dy = params->Ly / ( params->Ny-1.0 );
 
-    for( int i = 0 ; i < params->Nx ; i++ ){ // Geometria que emula duas Aletas idÍnticas igualmente espaÁadas e inicialmente a temperatura ambiente
+    for( int i = 0 ; i < params->Nx ; i++ ){ // Geometria que emula duas Aletas id√™nticas igualmente espa√ßadas e inicialmente a temperatura ambiente
     x = i*dx;
 
         for( int j = 0 ; j < params->Ny ; j++ ){
@@ -236,7 +236,7 @@ StateField *SetDomain(int Z) { // Definindo domÌnio inicial
 
 void Solver(StateField *field, int Z){
 
-  StateField *field_old; // Campo tempor·rio
+  StateField *field_old; // Campo tempor√°rio
 
   int k = 1;
   double x, y, t;
@@ -357,7 +357,7 @@ void Solver(StateField *field, int Z){
         }
 
         if( errorIt < TOL){
-          printf("\nA convergencia no tempo t = %.2f (k = %d) foi alcancada apos %d iteraÁıes", t, k, It);
+          printf("\nA convergencia no tempo t = %.2f (k = %d) foi alcancada apos %d itera√ß√µes", t, k, It);
           ItTotal = ItTotal + It;
           break;
         }
@@ -369,7 +369,7 @@ void Solver(StateField *field, int Z){
       k = k + 1;
     }
 
-  printf("\nSimulaÁ„o z = %d finalizada com sucesso com %d iteracoes.\n", Z, ItTotal);
+  printf("\nSimula√ß√£o z = %d finalizada com sucesso com %d iteracoes.\n", Z, ItTotal);
 
 }
 
@@ -503,7 +503,7 @@ return field_new;
 
 double CalcK(double T){ // Condutividade [W/(m . K)]
 
-    double a =  2227.664; // Bismuth PC Params and T = [Kelvin]
+    double a =  2227.664; // Iron Params and T = [Kelvin]
     double b = -0.627271;
     double c = 2.09554e-4;
     double d =  22.35452;
@@ -531,3 +531,4 @@ double calcG(double x){ // Termo fonte gerador de energia [W/m^3]
 }
 
 //-----------------------------------------------------------------------------
+
